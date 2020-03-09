@@ -1419,7 +1419,7 @@ static int BRMainNetVerifyDifficulty(const BRMerkleBlock *block, const BRSet *bl
 
 	int enough = 0;
     BRMerkleBlock * prevBlock = BRSetGet(blockSet, &block->prevBlock);
-    if(prevBlock == NULL)
+    if(prevBlock == NULL || prevBlock->height < 99999)
         return 1;
 
 	uint32_t r = darkGravityWaveTargetWithPreviousBlocks(block, prevBlock, blockSet, &enough);
