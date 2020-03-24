@@ -47,6 +47,10 @@ size_t BRBase58CheckEncode(char *str, size_t strLen, const uint8_t *data, size_t
 // returns the number of bytes written to data, or total dataLen needed if data is NULL
 size_t BRBase58CheckDecode(uint8_t *data, size_t dataLen, const char *str);
 
+// returns the number of bytes written to data, or total dataLen needed if data is NULL
+// This uses the Sha256D hash for the checksum
+size_t BRBase58CheckDecodeSha256D(uint8_t *data, size_t dataLen, const char *str);
+
 #ifdef __cplusplus
 }
 #endif

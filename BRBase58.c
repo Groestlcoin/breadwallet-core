@@ -228,3 +228,23 @@ size_t BRBase58CheckDecode(uint8_t *data, size_t dataLen, const char *str) {
     if (buf != _buf) free(buf);
     return (! data || len <= dataLen) ? len : 0;
 }
+
+size_t BRBase58CheckDecodeSha256D(uint8_t *data, size_t dataLen, const char *str) {
+    size_t len, bufLen = (str) ? strlen(str) : 0;
+    uint8_t md[256/8], _buf[(bufLen <= 0x1000) ? bufLen : 0], *buf = (bufLen <= 0x1000) ? _buf : malloc(bufLen);
+
+    assert(str != NULL);
+    assert(buf != NULL);
+    len = BRBase58Decode(buf, bufLen, str);
+
+    if (len >= 4) {
+        len -= 4;
+        BRSHA256_2(md, buf, len);
+        if (memcmp(&buf[len], md, sizeof(uint32_t)) != 0) len = 0; // verify checksum
+        if (data && len <= dataLen) memcpy(data, buf, len);
+    } else len = 0;
+
+    mem_clean(buf, bufLen);
+    if (buf != _buf) free(buf);
+    return (! data || len <= dataLen) ? len : 0;
+}

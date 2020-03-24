@@ -85,7 +85,10 @@ int BRBIP38KeyIsValid(const char *bip38Key) {
 
     assert(bip38Key != NULL);
 
-    if (BRBase58CheckDecode(data, sizeof(data), bip38Key) != 39) return 0; // invalid length
+    //if (BRBase58CheckDecode(data, sizeof(data), bip38Key) != 39) {
+        if(BRBase58CheckDecodeSha256D(data, sizeof(data), bip38Key) != 39)
+            return 0; // invalid length
+    //}
 
     uint16_t prefix = UInt16GetBE(data);
     uint8_t flag = data[2];
@@ -108,7 +111,10 @@ int BRKeySetBIP38Key(BRKey *key, const char *bip38Key, const char *passphrase) {
     assert(bip38Key != NULL);
     assert(passphrase != NULL);
 
-    if (BRBase58CheckDecode(data, sizeof(data), bip38Key) != 39) return 0; // invalid length
+    //if (BRBase58CheckDecode(data, sizeof(data), bip38Key) != 39) {
+        if(BRBase58CheckDecodeSha256D(data, sizeof(data), bip38Key) != 39)
+            return 0; // invalid length
+    //}
 
     uint16_t prefix = UInt16GetBE(data);
     uint8_t flag = data[2];
